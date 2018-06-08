@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {Container} from 'native-base';
+import {Container, Root} from 'native-base';
+import { Font, AppLoading } from "expo";
 
 /*Components Go Here*/
 import AddTodo from './components/AddTodo';
@@ -19,8 +20,17 @@ export default class App extends React.Component {
         {id:2, title: 'Second', active:false}
       ],
       itemFilter:'active',
+      loading:true,
     };
    
+  }
+
+  async componentWillMount() {
+    await Font.loadAsync({
+    Roboto: require("native-base/Fonts/Roboto.ttf"),
+    Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+    });
+    this.setState({ loading: false });
   }
 
   addTodoCallback = (childVar) => {
@@ -57,15 +67,25 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-      <Container>
-        <AddTodo placeholder="I, a prop" filter={this.state.itemFilter} callbackAddInput={this.addTodoCallback}/>
-        {/* Display Todos go here */}
-        <TodoList items={this.state.items} changeStatus={this.changeStatus} deleteItem={this.deleteItem} filter={this.state.itemFilter}/>
-        {/* Navigate between active and inactive */}
-        <NavigateTodo  filter={this.state.itemFilter} callbackNavigation={this.navigationCallback}/>
-      </Container>
-    );
+    if(this.state.loading)
+    {
+      return (
+        <Root>
+          <AppLoading />
+        </Root>
+      );
+    }
+    else{
+      return (
+        <Container>
+          <AddTodo placeholder="I, a prop" filter={this.state.itemFilter} callbackAddInput={this.addTodoCallback}/>
+          {/* Display Todos go here */}
+          <TodoList items={this.state.items} changeStatus={this.changeStatus} deleteItem={this.deleteItem} filter={this.state.itemFilter}/>
+          {/* Navigate between active and inactive */}
+          <NavigateTodo  filter={this.state.itemFilter} callbackNavigation={this.navigationCallback}/>
+        </Container>
+      );
+    }
   }
 }
 
