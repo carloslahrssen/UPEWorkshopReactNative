@@ -1,4 +1,4 @@
-1. You need to install node here
+1. Install NodeJS
 2. After installing node, 
 3. After updating npm, run the following command in your command line
 	npm install -g create-react-native-app
