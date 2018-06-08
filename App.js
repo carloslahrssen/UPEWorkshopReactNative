@@ -34,7 +34,13 @@ export default class App extends React.Component {
   }
 
   addTodoCallback = (childVar) => {
-    let newId = _.maxBy(this.state.items, 'id').id + 1;
+    let newId = 1;
+    
+    if(this.state.items.length > 0){
+      newId = _.maxBy(this.state.items, 'id').id + 1;
+    } else {
+      newId = 1;
+    }
 
     this.state.items.push({id:newId,title:childVar, active: true});
     this.setState(this.state);
